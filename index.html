@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Carl Registreraren</title>
+</head>
+
+<body>
+
+    <h1>Reseregistreraren</h1>
+    <form id="tripForm">
+        <div class="form-group">
+            <label for="from">Från:</label>
+            <select id="from" name="from" required>
+                <option value="">-- Jag reste från --</option>
+                <option value="Kontoret">Kontoret</option>
+                <option value="Ullstämmavägen-5">Ullstämmavägen 5</option>
+                <option value="Granholmsvägen-2b">Granholmsvägen 2b</option>
+                <option value="Kvinnebyvägen-1">Kvinnebyvägen 1</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="to">Till:</label>
+            <select id="to" name="to" required>
+                <option value="">-- Jag reste till --</option>
+                <option value="Kontoret">Kontoret</option>
+                <option value="Ullstämmavägen-5">Ullstämmavägen 5</option>
+                <option value="Granholmsvägen-2b">Granholmsvägen 2b</option>
+                <option value="Kvinnebyvägen-1">Kvinnebyvägen 1</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="departure-date">Resedatum:</label>
+            <input type="date" id="departure-date" name="departure-date" required>
+        </div>
+
+        <div id="savedTrips">
+            <h3>Sparade resor:</h3>
+            <ul id="tripList"></ul>
+        </div>
+
+        <button type="submit">Registrera resa</button>
+    </form>
+    <script src="./index.js"></script>
+</body>
+
+</html>

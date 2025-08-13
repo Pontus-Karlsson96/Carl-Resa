@@ -1,11 +1,11 @@
 const distances = {
-    "granholmsvägen2b-kontoret": 9000,
-    "granholmsvägen2b-kvinnebyvägen1": 3000,
-    "granholmsvägen2b-ullstämmavägen5": 2000,
-    "kontoret-kvinnebyvägen1": 8000,
-    "kontoret-ullstämmavägen5": 8000,
-    "kvinnebyvägen1-ullstämmavägen5": 2000
-}
+    "Granholmsvägen2b-Kontoret": 9000,
+    "Granholmsvägen2b-Kvinnebyvägen1": 3000,
+    "Granholmsvägen2b-Ullstämmavägen5": 2000,
+    "Kontoret-Kvinnebyvägen1": 8000,
+    "Kontoret-Ullstämmavägen5": 8000,
+    "Kvinnebyvägen1-Ullstämmavägen5": 2000
+};
 
 document.addEventListener('DOMContentLoaded', function () {
     const today = new Date();
@@ -15,19 +15,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const todayStr = yyyy + '-' + mm + '-' + dd;
 
     document.getElementById('departure-date').value = todayStr;
+    displaySavedTrips();
 });
 
 function calculateDistance(from, to) {
-
     if (from === to) return 0;
-
     const key = [from, to].sort().join('-');
-    return distances[key] ?? "Okänt avstånd";
+    return distances[key] ?? 0;
+}
+
+function addSpaceBeforeNumbers(str) {
+    return str.replace(/(\D)(\d)/g, '$1 $2');
 }
 
 function displaySavedTrips() {
     const tripList = document.getElementById('tripList');
     tripList.innerHTML = '';
+    displayTotal();
 
     const savedTrips = JSON.parse(localStorage.getItem('trips')) || [];
 
@@ -38,14 +42,61 @@ function displaySavedTrips() {
 
     savedTrips.forEach(trip => {
         const li = document.createElement('li');
-        li.innerHTML = `<strong>Från ${trip.from} till ${trip.to}</strong>
-                        <div>Datum: ${trip.date}</div>
-                        <small>Sparat den ${new Date(trip.timestamp).toLocaleString()}</small > `;
+        const distanceKm = typeof trip.distance === 'number' ? (trip.distance / 1000) + ' km' : trip.distance;
+
+        li.innerHTML = `
+            <button class="delete-btn" onclick="deleteTrip(${trip.timestamp})">×</button>
+            <strong>Från ${addSpaceBeforeNumbers(trip.from)} till ${addSpaceBeforeNumbers(trip.to)}</strong>
+            <div>Avstånd: <span class="distance">${distanceKm}</span></div>
+            <div>Datum: ${trip.date}</div>
+            <small>Sparad: ${new Date(trip.timestamp).toLocaleString()}</small>
+        `;
         tripList.appendChild(li);
+
     });
 }
 
-displaySavedTrips();
+function deleteTrip(timestamp) {
+    if (!confirm('Är du säker på att du vill ta bort denna resa?')) {
+        return;
+    }
+
+    const savedTrips = JSON.parse(localStorage.getItem('trips')) || [];
+    const updatedTrips = savedTrips.filter(trip => trip.timestamp !== timestamp);
+    localStorage.setItem('trips', JSON.stringify(updatedTrips));
+    displaySavedTrips();
+}
+
+function deleteAll() {
+    if (!confirm(`Är du SÄKER på att du vill ta bort ALLA?`)) {
+        return;
+    }
+
+    localStorage.clear();
+    displaySavedTrips();
+    displayTotal();
+}
+
+function displayTotal() {
+    try {
+        const savedTrips = JSON.parse(localStorage.getItem('trips')) || [];
+        let totalDistance = 0;
+
+        savedTrips.forEach(trip => {
+            totalDistance += Number(trip.distance) || 0;
+        });
+
+        const distanceKm = (totalDistance / 1000).toFixed(2) + ' km';
+        const counterEl = document.getElementById("counter");
+
+        if (counterEl) {
+            counterEl.innerHTML = `Total distans: ${distanceKm}<br>Antal resor: ${savedTrips.length}`;
+        }
+    } catch (error) {
+        console.error("Error updating totals:", error);
+    }
+}
+
 
 document.getElementById('tripForm').addEventListener('submit', function (event) {
     event.preventDefault();
@@ -64,9 +115,7 @@ document.getElementById('tripForm').addEventListener('submit', function (event) 
     };
 
     const savedTrips = JSON.parse(localStorage.getItem('trips')) || [];
-
     savedTrips.push(trip);
-
     localStorage.setItem('trips', JSON.stringify(savedTrips));
 
     displaySavedTrips();
@@ -74,3 +123,10 @@ document.getElementById('tripForm').addEventListener('submit', function (event) 
     this.reset();
     document.getElementById('departure-date').value = new Date().toISOString().split('T')[0];
 });
+
+document.getElementById("deleteAllBtn").addEventListener("click", (event) => {
+    event.preventDefault();
+
+    deleteAll();
+})
+

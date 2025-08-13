@@ -17,9 +17,9 @@
             <select id="from" name="from" required>
                 <option value="">-- Jag reste från --</option>
                 <option value="Kontoret">Kontoret</option>
-                <option value="Ullstämmavägen-5">Ullstämmavägen 5</option>
-                <option value="Granholmsvägen-2b">Granholmsvägen 2b</option>
-                <option value="Kvinnebyvägen-1">Kvinnebyvägen 1</option>
+                <option value="Ullstämmavägen5">Ullstämmavägen 5</option>
+                <option value="Granholmsvägen2b">Granholmsvägen 2b</option>
+                <option value="Kvinnebyvägen1">Kvinnebyvägen 1</option>
             </select>
         </div>
 
@@ -28,9 +28,9 @@
             <select id="to" name="to" required>
                 <option value="">-- Jag reste till --</option>
                 <option value="Kontoret">Kontoret</option>
-                <option value="Ullstämmavägen-5">Ullstämmavägen 5</option>
-                <option value="Granholmsvägen-2b">Granholmsvägen 2b</option>
-                <option value="Kvinnebyvägen-1">Kvinnebyvägen 1</option>
+                <option value="Ullstämmavägen5">Ullstämmavägen 5</option>
+                <option value="Granholmsvägen2b">Granholmsvägen 2b</option>
+                <option value="Kvinnebyvägen1">Kvinnebyvägen 1</option>
             </select>
         </div>
 
@@ -39,14 +39,20 @@
             <input type="date" id="departure-date" name="departure-date" required>
         </div>
 
+        <button type="submit">Registrera resa</button>
+
         <div id="savedTrips">
             <h3>Sparade resor:</h3>
             <ul id="tripList"></ul>
         </div>
 
-        <button type="submit">Registrera resa</button>
+        <button id="deleteAllBtn">Rensa listan</button>
+
     </form>
     <script src="./index.js"></script>
+
+    <div id="counter">Inga resor registrerade</div>
+
 </body>
 
 </html>

@@ -4,6 +4,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    padding-bottom: 60px;
 }
 
 .form-group {
@@ -84,13 +85,10 @@ li {
 }
 
 #counter {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    border: 3px solid black;
+    position: fixed;
+    bottom: 2px;
+    right: 2px;
     padding: 1rem;
-    height: 150px;
-    width: 200px;
     font-size: 12px;
     border-radius: 15px;
     display: flex;
